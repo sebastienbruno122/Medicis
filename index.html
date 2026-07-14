@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Médicis × Ringover — Suivi du projet CCaaS</title>
+<meta name="description" content="Suivi en direct du projet de remplacement de la solution téléphonie, mobile et centre de contact chez Médicis.">
+<link rel="icon" type="image/jpeg" href="medicis_immobilier_neuf_logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F8F9;
+    --panel: #FFFFFF;
+    --panel-border: #E4E9EC;
+    --ink: #0E1A22;
+    --ink-soft: #4B5B63;
+    --ink-faint: #8A98A0;
+    --teal: #27E2D7;
+    --teal-deep: #0E8F87;
+    --teal-ink: #06403D;
+    --teal-wash: #E8FBFA;
+    --ok: #1B9C57;
+    --ok-bg: #E4F7EC;
+    --warn: #C4790A;
+    --warn-bg: #FDF1DE;
+    --bad: #D7373F;
+    --bad-bg: #FBE6E7;
+    --bg-zone-cdc: #F4F9F8;
+    --bg-zone-legal: #F5F7FA;
+    --bg-zone-deploy: #F8F7F6;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 2px rgba(14,26,34,.04), 0 8px 24px -12px rgba(14,26,34,.12);
+    --font-display: 'Space Grotesk', 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--font-body); line-height:1.55; font-size:15.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--teal-deep);}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  @media (max-width:640px){ .wrap{padding:0 18px;} body{font-size:15px;} }
+
+  /* ---------- side nav ---------- */
+  .side-nav{
+    position:fixed; left:20px; top:50%; transform:translateY(-50%); z-index:50;
+    display:flex; flex-direction:column;
+  }
+  @media (max-width:980px){ .side-nav{display:none;} }
+  .side-nav-item{
+    display:flex; align-items:center; gap:11px;
+    padding:9px 4px; text-decoration:none; cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .side-nav-item .tick{
+    width:13px; height:2px; border-radius:2px; flex:0 0 auto;
+    background:var(--ink-faint); opacity:.55;
+    transition:width .25s ease, background-color .25s ease, opacity .25s ease;
+  }
+  .side-nav-item .side-label{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.03em; text-transform:uppercase;
+    white-space:nowrap; color:var(--ink-faint); opacity:.6;
+    transition:color .25s ease, opacity .25s ease;
+  }
+  .side-nav-item:hover .tick, .side-nav-item:focus-visible .tick, .side-nav-item.active .tick{
+    width:26px; background:var(--teal-deep); opacity:1;
+  }
+  .side-nav-item:hover .side-label, .side-nav-item:focus-visible .side-label, .side-nav-item.active .side-label{
+    color:var(--ink); opacity:1;
+  }
+  .side-nav-item.active .side-label{font-weight:600;}
+  .side-nav-item:focus-visible{outline:2px solid var(--teal); outline-offset:3px; border-radius:3px;}
+  .side-nav.on-dark .side-nav-item .tick{background:rgba(255,255,255,.4);}
+  .side-nav.on-dark .side-nav-item .side-label{color:rgba(232,241,244,.65);}
+  .side-nav.on-dark .side-nav-item:hover .tick,
+  .side-nav.on-dark .side-nav-item:focus-visible .tick,
+  .side-nav.on-dark .side-nav-item.active .tick{background:var(--teal);}
+  .side-nav.on-dark .side-nav-item:hover .side-label,
+  .side-nav.on-dark .side-nav-item:focus-visible .side-label,
+  .side-nav.on-dark .side-nav-item.active .side-label{color:#fff;}
+
+  .side-nav-sub{
+    display:flex; flex-direction:column; overflow:hidden; padding-left:19px;
+    max-height:0; opacity:0; transition:max-height .35s ease, opacity .25s ease;
+  }
+  .side-nav-item.active + .side-nav-sub{max-height:160px; opacity:1;}
+  .side-nav-subitem{
+    display:flex; align-items:center; gap:8px; padding:4px; text-decoration:none; cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .side-nav-subitem .tick{
+    width:9px; height:2px; border-radius:2px; flex:0 0 auto;
+    background:var(--ink-faint); opacity:.5;
+    transition:width .2s ease, background-color .2s ease, opacity .2s ease;
+  }
+  .side-nav-subitem .side-label{
+    font-family:var(--font-mono); font-size:9.5px; letter-spacing:.02em; text-transform:uppercase;
+    white-space:nowrap; color:var(--ink-faint); opacity:.65;
+    transition:color .2s ease, opacity .2s ease;
+  }
+  .side-nav-subitem:hover .tick, .side-nav-subitem.active .tick{width:17px; background:var(--teal-deep); opacity:1;}
+  .side-nav-subitem:hover .side-label, .side-nav-subitem.active .side-label{color:var(--ink); opacity:1;}
+  .side-nav-subitem.active .side-label{font-weight:600;}
+  .side-nav-subitem:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:3px;}
+  .side-nav.on-dark .side-nav-subitem .tick{background:rgba(255,255,255,.4);}
+  .side-nav.on-dark .side-nav-subitem .side-label{color:rgba(232,241,244,.6);}
+  .side-nav.on-dark .side-nav-subitem:hover .tick, .side-nav.on-dark .side-nav-subitem.active .tick{background:var(--teal);}
+  .side-nav.on-dark .side-nav-subitem:hover .side-label, .side-nav.on-dark .side-nav-subitem.active .side-label{color:#fff;}
+
+  @media (prefers-reduced-motion: reduce){
+    .side-nav-item .tick, .side-nav-item .side-label{transition:none;}
+    .side-nav-sub{transition:none;}
+    .side-nav-subitem .tick, .side-nav-subitem .side-label{transition:none;}
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    background:rgba(246,248,249,.86); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--panel-border);
+  }
+  .topbar-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0;}
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:16px;}
+  .brand .dot{width:9px; height:9px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 4px var(--teal-wash);}
+  .brand .x{color:var(--ink-faint); font-weight:500; margin:0 2px;}
+  .brand .client-logo{
+    width:24px; height:24px; border-radius:7px; object-fit:cover; display:block;
+    box-shadow:0 2px 8px -2px rgba(14,26,34,.3), 0 0 0 1px rgba(39,226,215,.3);
+    transition:transform .25s cubic-bezier(.16,.8,.24,1), box-shadow .25s ease;
+  }
+  .brand .client-logo:hover{transform:scale(1.1) rotate(-3deg); box-shadow:0 6px 14px -2px rgba(14,26,34,.35), 0 0 0 1.5px var(--teal);}
+  @media (prefers-reduced-motion: reduce){ .brand .client-logo{transition:none;} }
+  .foot-brand .client-logo{
+    width:16px; height:16px; border-radius:5px; object-fit:cover; display:inline-block; vertical-align:-3px;
+    margin-right:6px; box-shadow:0 0 0 1px rgba(39,226,215,.3);
+  }
+  .sync-pill{
+    display:flex; align-items:center; gap:7px;
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft);
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:99px;
+    padding:6px 12px 6px 10px;
+  }
+  .sync-pill .led{width:7px; height:7px; border-radius:50%; background:var(--ok); position:relative;}
+  .sync-pill .led::after{
+    content:''; position:absolute; inset:-4px; border-radius:50%;
+    border:1px solid var(--ok); opacity:.5; animation:ping 2.4s ease-out infinite;
+  }
+  @keyframes ping{ 0%{transform:scale(.6); opacity:.6;} 100%{transform:scale(1.9); opacity:0;} }
+  .sync-pill.offline .led{background:var(--ink-faint);}
+  .sync-pill.offline .led::after{border-color:var(--ink-faint);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 40px;}
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--teal-deep); background:var(--teal-wash); display:inline-block;
+    padding:5px 11px; border-radius:99px; margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--font-display); font-size:clamp(30px,4.4vw,48px); line-height:1.08;
+    margin:0 0 18px; letter-spacing:-.01em; max-width:16ch;
+  }
+  .hero p.lede{font-size:17px; color:var(--ink-soft); max-width:60ch; margin:0 0 34px;}
+  .stat-strip{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--panel-border); border:1px solid var(--panel-border); border-radius:var(--radius); overflow:hidden;}
+  @media (max-width:760px){ .stat-strip{grid-template-columns:repeat(2,1fr);} }
+  .stat{background:var(--panel); padding:22px 20px; position:relative; overflow:hidden; cursor:pointer; transition:filter .2s ease, opacity .2s ease;}
+  .stat .num{font-family:var(--font-display); font-size:30px; font-weight:700; display:flex; align-items:baseline; gap:6px;}
+  .stat .num small{font-size:14px; color:var(--ink-faint); font-weight:500; font-family:var(--font-body);}
+  .stat .label{font-size:12.5px; color:var(--ink-soft); margin-top:4px;}
+  .stat.ok .num{color:var(--ok);}
+  .stat.warn .num{color:var(--warn);}
+  .stat.bad .num{color:var(--bad);}
+
+  #cdcStats:hover .stat:not(:hover){opacity:.6; filter:saturate(.55);}
+  #cdcStats .stat:hover{filter:brightness(1.05) saturate(1.2);}
+  #cdcStats .stat::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(100deg, transparent 20%, rgba(255,255,255,.6) 50%, transparent 80%);
+    background-size:220% 100%; background-position:150% 0; mix-blend-mode:soft-light;
+    animation:covShimmer 3.6s ease-in-out infinite;
+  }
+  #cdcStats .stat:nth-child(1)::after{animation-delay:0s;}
+  #cdcStats .stat:nth-child(2)::after{animation-delay:.3s;}
+  #cdcStats .stat:nth-child(3)::after{animation-delay:.6s;}
+  #cdcStats .stat:nth-child(4)::after{animation-delay:.9s;}
+  #cdcStats .stat::before{
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
+    opacity:0; transition:opacity .25s ease;
+    background:radial-gradient(140px circle at var(--sx,50%) var(--sy,50%), rgba(255,255,255,.65), transparent 70%);
+    mix-blend-mode:overlay;
+  }
+  #cdcStats .stat:hover::before{opacity:1;}
+  @media (prefers-reduced-motion: reduce){ #cdcStats .stat::after{animation:none;} }
+
+  /* ---------- sections generic ---------- */
+  section{padding:56px 0;}
+  .section-head{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:28px; flex-wrap:wrap;}
+  .section-head h2{font-family:var(--font-display); font-size:26px; margin:0 0 6px;}
+  .section-head p{margin:0; color:var(--ink-soft); max-width:56ch; font-size:14.5px;}
+
+  /* ---------- section background zones ---------- */
+  #cdc-medicis, #roadmap, #grille{background:var(--bg-zone-cdc);}
+  #legal-empower{background:var(--bg-zone-legal);}
+  #deployment-plan, #pricing{background:var(--bg-zone-deploy);}
+
+  /* ---------- suite (dark band) ---------- */
+  :root{
+    --airo: #7B7FF5;
+    --empower: #F0A93A;
+    --sf-blue: #00A1E0;
+  }
+  .suite-band{
+    position:relative; overflow:hidden; isolation:isolate;
+    background:
+      radial-gradient(600px 320px at 12% -10%, rgba(39,226,215,.20), transparent 60%),
+      radial-gradient(560px 300px at 88% 10%, rgba(123,127,245,.20), transparent 60%),
+      radial-gradient(620px 340px at 55% 110%, rgba(240,169,58,.14), transparent 60%),
+      linear-gradient(180deg, #0A1620 0%, #0C1D26 100%);
+  }
+  .suite-band::before{
+    content:''; position:absolute; inset:0; z-index:-1; opacity:.5; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(circle at 50% 0%, #000 0%, transparent 75%);
+  }
+  .suite-blobs{position:absolute; inset:0; z-index:0; transition:transform .35s ease-out;}
+  .suite-blob{position:absolute; border-radius:50%; filter:blur(64px); pointer-events:none;}
+  .suite-blob.b1{width:340px; height:340px; opacity:.30; background:var(--teal); top:-90px; left:6%; animation:blobFloat1 17s ease-in-out infinite;}
+  .suite-blob.b2{width:300px; height:300px; opacity:.28; background:var(--airo); top:6%; right:4%; animation:blobFloat2 21s ease-in-out infinite;}
+  .suite-blob.b3{width:360px; height:360px; opacity:.22; background:var(--empower); bottom:-140px; left:36%; animation:blobFloat3 25s ease-in-out infinite;}
+  @keyframes blobFloat1{0%,100%{transform:translate(0,0);} 50%{transform:translate(46px,32px);}}
+  @keyframes blobFloat2{0%,100%{transform:translate(0,0);} 50%{transform:translate(-36px,42px);}}
+  @keyframes blobFloat3{0%,100%{transform:translate(0,0);} 50%{transform:translate(34px,-28px);}}
+  .suite-band .wrap{position:relative; z-index:1;}
+  .suite-band .section-head h2{color:#fff;}
+  .suite-band .section-head p{color:rgba(232,241,244,.68);}
+  .suite-group{margin-top:48px; padding-top:40px; border-top:1px solid rgba(255,255,255,.14);}
+  .suite-group:first-of-type{margin-top:32px; padding-top:0; border-top:none;}
+  .suite-subhead{font-family:var(--font-display); font-size:21px; margin:0 0 8px; color:#fff;}
+  .suite-subhead-intro{font-size:13.6px; color:rgba(232,241,244,.72); margin:0 0 24px; max-width:72ch; line-height:1.55;}
+  .suite-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:18px; perspective:1200px;}
+  @property --angle{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+  .suite-card{
+    --enter-y:28px; --enter-o:0; --hover-y:0px; --tilt-x:0deg; --tilt-y:0deg; --mx:50%; --my:50%; --spot-o:0; --angle:0deg;
+    position:relative; display:flex; flex-direction:column; gap:14px; transform-style:preserve-3d;
+    background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.10); border-radius:20px; padding:26px;
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 20px 40px -28px rgba(0,0,0,.6);
+    opacity:var(--enter-o);
+    transform:translateY(calc(var(--enter-y) + var(--hover-y))) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    transition:
+      opacity .7s cubic-bezier(.16,.8,.24,1) var(--d,0s),
+      transform .35s cubic-bezier(.16,.8,.24,1),
+      border-color .2s ease, box-shadow .2s ease;
+  }
+  .suite-card.in-view{--enter-y:0px; --enter-o:1;}
+  .suite-card::before{
+    content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1;
+    opacity:var(--spot-o); transition:opacity .3s ease;
+    background:radial-gradient(260px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%);
+  }
+  .suite-card::after{
+    content:''; position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none;
+    background:conic-gradient(from var(--angle), transparent 0%, var(--accent) 10%, transparent 22%, transparent 78%, var(--accent) 90%, transparent 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; opacity:.7;
+    animation:spinBorder 6s linear infinite;
+  }
+  @keyframes spinBorder{ to{ --angle:360deg; } }
+  .suite-card:hover{
+    --hover-y:-6px; --spot-o:1;
+    border-color:rgba(255,255,255,.18);
+    box-shadow:0 1px 0 rgba(255,255,255,.08) inset, 0 26px 48px -24px var(--accent-shadow, rgba(0,0,0,.6));
+  }
+  .suite-card.mobile{--accent: var(--teal); --accent-shadow: rgba(39,226,215,.30);}
+  .suite-card.telephony{--accent: var(--airo); --accent-shadow: rgba(123,127,245,.32);}
+  .suite-card.empower{--accent: var(--empower); --accent-shadow: rgba(240,169,58,.30);}
+  .suite-card.salesforce{--accent: var(--sf-blue); --accent-shadow: rgba(0,161,224,.32);}
+  .suite-icon{
+    width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:16px; color:#0A1620;
+    background:linear-gradient(155deg, var(--accent) 0%, #fff 160%);
+    box-shadow:0 10px 24px -8px var(--accent-shadow, transparent);
+    animation:iconPulse 3.2s ease-in-out infinite;
+  }
+  @keyframes iconPulse{
+    0%,100%{ box-shadow:0 10px 24px -8px var(--accent-shadow, transparent); }
+    50%{ box-shadow:0 12px 34px -4px var(--accent-shadow, transparent); }
+  }
+  .suite-tag{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.05em; text-transform:uppercase;
+    padding:4px 10px; border-radius:99px; font-weight:600; align-self:flex-start;
+    background:color-mix(in srgb, var(--accent) 20%, transparent); color:var(--accent);
+    border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  .suite-card h3{margin:0; font-size:19px; font-family:var(--font-display); color:#fff;}
+  .suite-card p{margin:0; font-size:13.6px; color:rgba(232,241,244,.72);}
+  .suite-features{list-style:none; margin:2px 0 0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  .suite-features li{display:flex; align-items:flex-start; gap:9px; font-size:13.2px; color:rgba(232,241,244,.86); line-height:1.4;}
+  .suite-features .tick{
+    flex:0 0 auto; width:17px; height:17px; margin-top:1px; border-radius:50%;
+    background:color-mix(in srgb, var(--accent) 22%, transparent); color:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;
+  }
+  .suite-refs{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:auto; padding-top:14px; border-top:1px solid rgba(255,255,255,.12);}
+  .suite-refs .ref-label{font-size:11.5px; color:rgba(232,241,244,.5); margin-right:2px;}
+  .ref-chip{
+    font-family:var(--font-mono); font-size:11.5px; padding:3px 9px; border-radius:99px;
+    border:1px solid var(--panel-border); background:var(--bg); color:var(--ink-soft); cursor:pointer;
+  }
+  .ref-chip:hover{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .suite-band .ref-chip{background:rgba(255,255,255,.07); color:rgba(232,241,244,.85); border-color:rgba(255,255,255,.18);}
+  .suite-band .ref-chip:hover{background:#fff; color:#0A1620; border-color:#fff;}
+
+  /* ---------- team (same dark band, calm cards) ---------- */
+  .person-grid{
+    display:grid; grid-template-columns:repeat(3, minmax(0,220px)); gap:20px;
+    justify-content:center; max-width:780px; margin:0 auto;
+  }
+  @media (max-width:700px){ .person-grid{grid-template-columns:minmax(0,220px); max-width:260px;} }
+  .person-card{
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:var(--radius);
+    padding:26px 20px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
+    transition:background-color .2s ease, border-color .2s ease;
+  }
+  .person-card:hover{background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.2);}
+  .person-card .avatar{
+    width:104px; height:104px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:28px; color:rgba(232,241,244,.85);
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+    overflow:hidden; margin-bottom:6px;
+  }
+  .person-card .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+  .person-card .suite-tag{background:rgba(255,255,255,.1); color:rgba(232,241,244,.85); border:1px solid rgba(255,255,255,.18); align-self:center;}
+  .person-card h3{color:#fff;}
+  .person-card p{color:rgba(232,241,244,.72);}
+
+  /* ---------- roadmap lanes ---------- */
+  .lanes{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:860px){ .lanes{grid-template-columns:1fr;} }
+  .lane{
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+    padding:22px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .lane:hover{transform:translateY(-2px);}
+  .lane-top{display:flex; align-items:center; justify-content:space-between;}
+  .lane-tag{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; text-transform:uppercase;
+    padding:4px 9px; border-radius:6px; font-weight:600;
+  }
+  .lane.ok .lane-tag{background:var(--ok-bg); color:var(--ok);}
+  .lane.warn .lane-tag{background:var(--warn-bg); color:var(--warn);}
+  .lane.bad .lane-tag{background:var(--bad-bg); color:var(--bad);}
+  .lane .count{font-family:var(--font-display); font-size:40px; font-weight:700; line-height:1;}
+  .lane h3{margin:0; font-size:16.5px; font-family:var(--font-display);}
+  .lane p{margin:0; font-size:13.5px; color:var(--ink-soft);}
+  .lane .arrow{font-size:13px; color:var(--teal-deep); font-weight:600;}
+
+  /* ---------- grid / table ---------- */
+  .grid-toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px;}
+  .search{
+    flex:1; min-width:220px; padding:11px 14px; border-radius:var(--radius-sm); border:1px solid var(--panel-border);
+    background:var(--panel); font-family:var(--font-body); font-size:14px; color:var(--ink);
+  }
+  .search:focus{outline:2px solid var(--teal); outline-offset:1px;}
+  .chip{
+    font-family:var(--font-mono); font-size:12.5px; padding:8px 14px; border-radius:99px;
+    border:1px solid var(--panel-border); background:var(--panel); color:var(--ink-soft); cursor:pointer;
+  }
+  .chip[aria-pressed="true"]{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .chip:focus-visible, .lane:focus-visible, .search:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+
+  .table-panel{background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);}
+  .table-scroll{overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; min-width:760px;}
+  thead th{
+    text-align:left; font-family:var(--font-mono); font-size:11px; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--ink-faint); padding:12px 16px; border-bottom:1px solid var(--panel-border); background:#FAFBFC;
+    white-space:nowrap;
+  }
+  tbody td{padding:13px 16px; border-bottom:1px solid var(--panel-border); font-size:13.6px; vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FBFDFD;}
+  td.n{font-family:var(--font-mono); color:var(--ink-soft); white-space:nowrap;}
+  td.chapitre{color:var(--ink-soft); font-size:12.8px; max-width:200px;}
+  .badge{
+    display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600;
+    padding:4px 10px; border-radius:99px; white-space:nowrap;
+  }
+  .badge .d{width:6px; height:6px; border-radius:50%;}
+  .badge.ok{background:var(--ok-bg); color:var(--ok);} .badge.ok .d{background:var(--ok);}
+  .badge.warn{background:var(--warn-bg); color:var(--warn);} .badge.warn .d{background:var(--warn);}
+  .badge.bad{background:var(--bad-bg); color:var(--bad);} .badge.bad .d{background:var(--bad);}
+  .empty-row td{text-align:center; color:var(--ink-faint); padding:40px 16px; font-size:13.5px;}
+  .count-note{font-size:12.5px; color:var(--ink-faint); margin-top:12px;}
+  .show-more-wrap{display:flex; justify-content:center; margin-top:18px;}
+  .show-more-wrap[hidden]{display:none;}
+  .show-more-btn{
+    font-family:var(--font-mono); font-size:12.5px; padding:10px 22px; border-radius:99px;
+    border:1px solid var(--panel-border); background:var(--panel); color:var(--ink-soft); cursor:pointer;
+    box-shadow:var(--shadow); transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .show-more-btn:hover{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .show-more-btn:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+
+  /* ---------- coverage bar ---------- */
+  .coverage-block{margin-top:18px;}
+  .coverage-bar{
+    display:flex; height:10px; border-radius:5px; overflow:visible; background:var(--panel-border);
+    position:relative;
+  }
+  .coverage-bar.lg{height:16px; border-radius:8px;}
+  .cov-seg{height:100%; width:0%; transition:width .6s ease;}
+  .cov-seg:first-child{border-top-left-radius:inherit; border-bottom-left-radius:inherit;}
+  .cov-seg:last-child{border-top-right-radius:inherit; border-bottom-right-radius:inherit;}
+  .cov-seg + .cov-seg{margin-left:2px;}
+  .cov-seg.ok{background:var(--ok);}
+  .cov-seg.warn{background:var(--warn);}
+  .cov-seg.bad{background:var(--bad);}
+  .coverage-legend{display:flex; flex-wrap:wrap; gap:16px; margin-top:10px; font-size:12.5px; color:var(--ink-soft);}
+  .cov-item{display:flex; align-items:center; gap:6px;}
+  .cov-item b{color:var(--ink); font-weight:600;}
+  .cov-dot{width:8px; height:8px; border-radius:50%; flex:0 0 auto;}
+  .cov-dot.ok{background:var(--ok);}
+  .cov-dot.warn{background:var(--warn);}
+  .cov-dot.bad{background:var(--bad);}
+  @media (prefers-reduced-motion: reduce){ .cov-seg{transition:none;} }
+
+  .coverage-block .cov-seg{
+    transition: width .6s ease var(--seg-delay, 0s), filter .2s ease, opacity .2s ease;
+    cursor:pointer;
+  }
+  .coverage-block .cov-seg:nth-child(1){--seg-delay:0s;}
+  .coverage-block .cov-seg:nth-child(2){--seg-delay:.08s;}
+  .coverage-block .cov-seg:nth-child(3){--seg-delay:.16s;}
+  .coverage-block .coverage-bar:hover .cov-seg:not(:hover){opacity:.55; filter:saturate(.55);}
+  .coverage-block .cov-seg:hover{filter:brightness(1.16) saturate(1.25); position:relative; z-index:1;}
+  .coverage-block .coverage-bar::after{
+    content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit; z-index:1;
+    background:linear-gradient(100deg, transparent 20%, rgba(255,255,255,.6) 50%, transparent 80%);
+    background-size:220% 100%; background-position:150% 0; mix-blend-mode:soft-light;
+    animation:covShimmer 3.6s ease-in-out infinite;
+  }
+  @keyframes covShimmer{
+    0%{background-position:150% 0;}
+    55%{background-position:-60% 0;}
+    100%{background-position:-60% 0;}
+  }
+  .coverage-block .coverage-bar::before{
+    content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit; z-index:2;
+    opacity:0; transition:opacity .25s ease;
+    background:radial-gradient(90px circle at var(--cbx,50%) var(--cby,50%), rgba(255,255,255,.7), transparent 70%);
+    mix-blend-mode:overlay;
+  }
+  .coverage-block .coverage-bar:hover::before{opacity:1;}
+  .coverage-block .cov-item{transition:opacity .2s ease, transform .2s ease;}
+  .coverage-block:has(.cov-item.cov-ok:hover) .cov-seg:not(.ok),
+  .coverage-block:has(.cov-item.cov-warn:hover) .cov-seg:not(.warn),
+  .coverage-block:has(.cov-item.cov-bad:hover) .cov-seg:not(.bad){
+    opacity:.5; filter:saturate(.5);
+  }
+  .coverage-block:has(.cov-seg.ok:hover) .cov-item:not(.cov-ok),
+  .coverage-block:has(.cov-seg.warn:hover) .cov-item:not(.cov-warn),
+  .coverage-block:has(.cov-seg.bad:hover) .cov-item:not(.cov-bad){
+    opacity:.45;
+  }
+  .coverage-block:has(.cov-item.cov-ok:hover) .cov-item.cov-ok,
+  .coverage-block:has(.cov-item.cov-warn:hover) .cov-item.cov-warn,
+  .coverage-block:has(.cov-item.cov-bad:hover) .cov-item.cov-bad{
+    transform:translateX(2px);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .coverage-block .coverage-bar::after{animation:none;}
+    .coverage-block .cov-seg{transition:filter .2s ease, opacity .2s ease;}
+  }
+
+  /* ---------- legal / conformité ---------- */
+  .legal-panel{
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+    padding:32px; box-shadow:var(--shadow);
+  }
+  .legal-badge{
+    display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11px; font-weight:700;
+    letter-spacing:.04em; text-transform:uppercase; background:var(--teal-wash); color:var(--teal-deep);
+    padding:6px 12px; border-radius:99px; margin-bottom:18px;
+  }
+  .legal-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:8px;}
+  @media (max-width:760px){ .legal-grid{grid-template-columns:1fr;} }
+  .legal-card{background:var(--bg); border:1px solid var(--panel-border); border-radius:var(--radius); padding:22px; display:flex; gap:14px;}
+  .legal-num{
+    flex:0 0 auto; width:34px; height:34px; border-radius:10px; background:var(--ok-bg); color:var(--ok);
+    font-family:var(--font-display); font-weight:700; font-size:15px; display:flex; align-items:center; justify-content:center;
+  }
+  .legal-card h4{margin:0 0 6px; font-size:15px; font-family:var(--font-display);}
+  .legal-card p{margin:0; font-size:13.2px; color:var(--ink-soft); line-height:1.55;}
+
+  /* ---------- eSIM ---------- */
+  .esim-panel{background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius); padding:32px; box-shadow:var(--shadow);}
+  .esim-intro{margin:0 0 26px; font-size:13.6px; color:var(--ink-soft); max-width:72ch; line-height:1.6;}
+  .esim-label{font-family:var(--font-mono); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin:0 0 12px;}
+  .esim-plans{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:30px;}
+  @media (max-width:900px){ .esim-plans{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:560px){ .esim-plans{grid-template-columns:repeat(2,1fr);} }
+  .esim-plan{
+    background:var(--bg); border:1px solid var(--panel-border); border-radius:var(--radius-sm);
+    padding:20px 14px; text-align:center; display:flex; flex-direction:column; gap:6px;
+  }
+  .esim-plan.featured{border-color:var(--teal); box-shadow:0 0 0 1px var(--teal) inset;}
+  .esim-plan .vol{font-family:var(--font-display); font-size:23px; font-weight:700; color:var(--teal-deep);}
+  .esim-plan .lbl{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.03em; font-family:var(--font-mono);}
+  .esim-plan .desc{font-size:12px; color:var(--ink-soft); margin-top:2px; line-height:1.4;}
+  .esim-features{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:760px){ .esim-features{grid-template-columns:1fr;} }
+  .esim-feature{background:var(--bg); border:1px solid var(--panel-border); border-radius:var(--radius); padding:20px; display:flex; gap:14px;}
+  .esim-feature-icon{
+    flex:0 0 auto; width:38px; height:38px; border-radius:10px; background:var(--teal-wash); color:var(--teal-deep);
+    display:flex; align-items:center; justify-content:center; font-size:17px;
+  }
+  .esim-feature h4{margin:0 0 4px; font-size:14px; font-family:var(--font-display);}
+  .esim-feature p{margin:0; font-size:12.6px; color:var(--ink-soft); line-height:1.5;}
+
+  /* ---------- pricing / placeholder ---------- */
+  .blank-cell{
+    display:inline-block; min-width:70px; padding-bottom:2px; border-bottom:1px dashed var(--ink-faint);
+    color:var(--ink-faint); font-family:var(--font-mono); font-size:12.5px; font-style:italic;
+  }
+  .placeholder-panel{
+    background:var(--panel); border:1px dashed var(--panel-border); border-radius:var(--radius);
+    padding:32px; box-shadow:var(--shadow); text-align:center;
+  }
+  .placeholder-panel .eyebrow{margin-bottom:14px;}
+  .placeholder-panel p{margin:0 auto; max-width:56ch; color:var(--ink-soft); font-size:13.6px;}
+
+  footer{padding:36px 0 60px; border-top:1px solid var(--panel-border); margin-top:20px;}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;}
+  footer p{margin:0; font-size:12.5px; color:var(--ink-faint);}
+  footer .foot-brand{font-family:var(--font-display); font-weight:700; color:var(--ink-soft);}
+
+  ::selection{background:var(--teal); color:var(--teal-ink);}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .sync-pill .led::after{animation:none;}
+    .lane{transition:none;}
+    .suite-blob{animation:none;}
+    .suite-blobs{transition:none;}
+    .suite-card{--enter-y:0px; --enter-o:1; transition:border-color .2s ease, box-shadow .2s ease;}
+    .suite-card::after{animation:none;}
+    .suite-icon{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand"><span class="dot"></span> Ringover <span class="x">×</span> <img class="client-logo" src="medicis_immobilier_neuf_logo.jpeg" alt="Médicis"> Médicis</div>
+    <div class="sync-pill" id="syncPill"><span class="led"></span><span id="syncText">Chargement des données…</span></div>
+  </div>
+</div>
+
+<nav class="side-nav" aria-label="Navigation rapide">
+  <a class="side-nav-item active" href="#hero" data-target="hero"><span class="tick"></span><span class="side-label">Accueil</span></a>
+  <a class="side-nav-item" href="#equipe" data-target="equipe"><span class="tick"></span><span class="side-label">Équipe</span></a>
+
+  <a class="side-nav-item" href="#cdc-medicis" data-target="cdc-medicis" data-watch="cdc-medicis roadmap grille"><span class="tick"></span><span class="side-label">Cahier des charges</span></a>
+  <div class="side-nav-sub">
+    <a class="side-nav-subitem" href="#roadmap" data-target="roadmap"><span class="tick"></span><span class="side-label">Feuille de route</span></a>
+    <a class="side-nav-subitem" href="#grille" data-target="grille"><span class="tick"></span><span class="side-label">Grille détaillée</span></a>
+  </div>
+
+  <a class="side-nav-item" href="#modules-integration" data-target="modules-integration" data-watch="modules-integration suite-products suite-salesforce"><span class="tick"></span><span class="side-label">Modules et intégration</span></a>
+  <div class="side-nav-sub">
+    <a class="side-nav-subitem" href="#suite-products" data-target="suite-products"><span class="tick"></span><span class="side-label">Suite Ringover</span></a>
+    <a class="side-nav-subitem" href="#suite-salesforce" data-target="suite-salesforce"><span class="tick"></span><span class="side-label">Intégration Salesforce</span></a>
+  </div>
+
+  <a class="side-nav-item" href="#esim" data-target="esim"><span class="tick"></span><span class="side-label">Flotte mobile eSIM</span></a>
+  <a class="side-nav-item" href="#legal-empower" data-target="legal-empower"><span class="tick"></span><span class="side-label">Conformité &amp; IA</span></a>
+  <a class="side-nav-item" href="#deployment-plan" data-target="deployment-plan"><span class="tick"></span><span class="side-label">Plan de déploiement</span></a>
+  <a class="side-nav-item" href="#pricing" data-target="pricing"><span class="tick"></span><span class="side-label">Tarification</span></a>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="wrap">
+    <span class="eyebrow">Projet CCaaS · Dossier Ringover</span>
+    <h1>Le dossier Ringover pour Médicis</h1>
+    <p class="lede">
+      Une interface dédiée à Médicis, pour donner une visibilité complète sur les capacités de Ringover à répondre
+      au projet : flotte mobile eSIM, centre de contact et SVI, intégration Salesforce, analyse conversationnelle
+      avec Empower, et la tarification associée. Le contenu ci-dessous se met à jour automatiquement à mesure que
+      l'équipe avance.
+    </p>
+  </div>
+</header>
+
+<section id="equipe" class="suite-band">
+  <div class="suite-blobs" aria-hidden="true">
+    <div class="suite-blob b1"></div>
+    <div class="suite-blob b2"></div>
+    <div class="suite-blob b3"></div>
+  </div>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Parties prenantes côté Ringover</h2>
+        <p>L'équipe mobilisée sur le dossier Médicis.</p>
+      </div>
+    </div>
+    <div class="person-grid">
+      <div class="person-card">
+        <div class="avatar"><img src="photo-seb.jpeg" alt="Sébastien Bruno" loading="lazy"></div>
+        <span class="suite-tag">Solution Engineer</span>
+        <h3>Sébastien Bruno</h3>
+        <p>Ingénieur avant-vente, point de contact technique dédié jusqu'à la signature. Assure ensuite la passation avec le Customer Success Manager en charge du déploiement.</p>
+      </div>
+      <div class="person-card">
+        <div class="avatar"><img src="photo-pablo.jpeg" alt="Pablo Capone" loading="lazy"></div>
+        <span class="suite-tag">Commercial</span>
+        <h3>Pablo Capone</h3>
+        <p>Commercial en charge du compte Médicis.</p>
+      </div>
+      <div class="person-card">
+        <div class="avatar">?</div>
+        <span class="suite-tag">Customer Success</span>
+        <h3>Lilia Payet</h3>
+        <p>Pilote le déploiement une fois le dossier signé.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cdc-medicis">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Cahier des charges Médicis</h2>
+        <p>Réponse exigence par exigence à la matrice de conformité Médicis, sur le périmètre mobile eSIM, centre de contact et CRM.</p>
+      </div>
+    </div>
+    <div class="stat-strip" id="cdcStats">
+      <div class="stat"><div class="num" id="statTotal">–</div><div class="label">Exigences analysées</div></div>
+      <div class="stat ok"><div class="num" id="statOk">–</div><div class="label">Disponibles aujourd'hui</div></div>
+      <div class="stat warn"><div class="num" id="statWarn">–</div><div class="label">Couvertes avec paramétrage</div></div>
+      <div class="stat bad"><div class="num" id="statBad">–</div><div class="label">Non couvertes par Ringover</div></div>
+    </div>
+    <div class="coverage-block" id="covMedicis" role="img" aria-label="Répartition de la couverture — Médicis">
+      <div class="coverage-bar">
+        <div class="cov-seg ok"></div>
+        <div class="cov-seg warn"></div>
+        <div class="cov-seg bad"></div>
+      </div>
+      <div class="coverage-legend">
+        <span class="cov-item cov-ok"><span class="cov-dot ok"></span>Oui · <b>–</b></span>
+        <span class="cov-item cov-warn"><span class="cov-dot warn"></span>Partiel · <b>–</b></span>
+        <span class="cov-item cov-bad"><span class="cov-dot bad"></span>Non · <b>–</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Feuille de route fonctionnelle</h2>
+        <p>Trois niveaux de disponibilité, du plus simple au plus engageant. Cliquez une carte pour filtrer le détail plus bas.</p>
+      </div>
+    </div>
+    <div class="lanes">
+      <div class="lane ok" data-filter="Oui" tabindex="0" role="button" aria-label="Filtrer sur disponible aujourd'hui">
+        <div class="lane-top"><span class="lane-tag">Disponible</span><span class="arrow">Voir le détail →</span></div>
+        <div class="count" id="laneOkCount">–</div>
+        <h3>Disponible aujourd'hui</h3>
+        <p>Fonctionnalités natives Ringover / Empower, sans développement complémentaire.</p>
+      </div>
+      <div class="lane warn" data-filter="Partiel" tabindex="0" role="button" aria-label="Filtrer sur couvert avec configuration">
+        <div class="lane-top"><span class="lane-tag">Paramétrage requis</span><span class="arrow">Voir le détail →</span></div>
+        <div class="count" id="laneWarnCount">–</div>
+        <h3>Couvert, configuration nécessaire</h3>
+        <p>La fonctionnalité existe chez Ringover : elle nécessite un paramétrage, un ajustement commercial, ou une validation précise du comportement attendu.</p>
+      </div>
+      <div class="lane bad" data-filter="Non" tabindex="0" role="button" aria-label="Filtrer sur non couvert par Ringover">
+        <div class="lane-top"><span class="lane-tag">Non couvert</span><span class="arrow">Voir le détail →</span></div>
+        <div class="count" id="laneBadCount">–</div>
+        <h3>Non couvert par Ringover</h3>
+        <p>Ce point n'est pas couvert par Ringover aujourd'hui.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="grille">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Grille de conformité détaillée</h2>
+        <p>Les 28 exigences de la matrice de conformité Médicis, avec la réponse Ringover associée.</p>
+      </div>
+    </div>
+    <div class="grid-toolbar">
+      <input class="search" id="searchInput" type="text" placeholder="Rechercher un mot-clé, un n°, un chapitre…">
+      <button class="chip" data-chip="Tous" aria-pressed="true">Tous</button>
+      <button class="chip" data-chip="Oui">Oui</button>
+      <button class="chip" data-chip="Partiel">Partiel</button>
+      <button class="chip" data-chip="Non">Non</button>
+    </div>
+    <div class="table-panel">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>N°</th><th>Chapitre</th><th>Exigence client Médicis</th>
+              <th>Couverture</th><th>Commentaire Ringover</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="count-note" id="countNote"></p>
+    <div class="show-more-wrap">
+      <button class="show-more-btn" id="showMoreBtn" type="button">Afficher plus</button>
+    </div>
+  </div>
+</section>
+
+<section id="modules-integration" class="suite-band">
+  <div class="suite-blobs" aria-hidden="true">
+    <div class="suite-blob b1"></div>
+    <div class="suite-blob b2"></div>
+    <div class="suite-blob b3"></div>
+  </div>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Modules et intégration</h2>
+        <p>La suite de produits Ringover, et la façon dont elle s'imbrique dans Salesforce — de la flotte mobile à la clôture de l'opportunité.</p>
+      </div>
+    </div>
+
+    <div class="suite-group" id="suite-products">
+      <h3 class="suite-subhead">La suite Ringover</h3>
+      <p class="suite-subhead-intro">Trois briques complémentaires répondent au périmètre Médicis : la flotte mobile eSIM, le centre de contact/SVI, et l'analyse conversationnelle.</p>
+      <div class="suite-grid">
+        <div class="suite-card mobile">
+          <div class="suite-icon">M</div>
+          <span class="suite-tag">Flotte mobile · eSIM</span>
+          <h3>Ringover Mobile</h3>
+          <p>Déploiement et administration d'une flotte eSIM complète, avec portabilité entrante et autonomie totale sur les lignes.</p>
+          <ul class="suite-features">
+            <li><span class="tick">✓</span>Déploiement de flottes eSIM et portabilité industrielle des numéros</li>
+            <li><span class="tick">✓</span>Console d'administration autonome : réédition des QR codes pour la réaffectation des lignes</li>
+            <li><span class="tick">✓</span>Appels Wi-Fi natifs sur iPhone, via le profil opérateur configuré sur l'eSIM</li>
+            <li><span class="tick">✓</span>Collecte des statistiques d'appels même depuis le clavier natif du téléphone (infrastructure Simless)</li>
+          </ul>
+        </div>
+        <div class="suite-card telephony">
+          <div class="suite-icon">R</div>
+          <span class="suite-tag">Centre de contact &amp; SVI</span>
+          <h3>Ringover</h3>
+          <p>Le socle téléphonie et centre de contact : SVI, routage, supervision et CTI.</p>
+          <ul class="suite-features">
+            <li><span class="tick">✓</span>Gestion de numéros fictifs multi-agences avec renvoi vers un numéro principal</li>
+            <li><span class="tick">✓</span>Identification DNIS et files d'attente priorisées</li>
+            <li><span class="tick">✓</span>Dashboard superviseur temps réel et remontée de fiche contact (CTI)</li>
+          </ul>
+        </div>
+        <div class="suite-card empower">
+          <div class="suite-icon">E</div>
+          <span class="suite-tag">Analyse conversationnelle IA</span>
+          <h3>Empower</h3>
+          <p>La brique d'analyse de la suite, pour le pilotage de l'activité et la performance des campagnes.</p>
+          <ul class="suite-features">
+            <li><span class="tick">✓</span>Détection de répondeur (AMD) pour optimiser les campagnes d'appels sortants</li>
+            <li><span class="tick">✓</span>Restitution visuelle des pics d'appels (heatmap) par tranche horaire</li>
+            <li><span class="tick">✓</span>Transcription IA et écoute discrète, entièrement désactivables si besoin</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="suite-group" id="suite-salesforce">
+      <h3 class="suite-subhead">Intégration Salesforce</h3>
+      <p class="suite-subhead-intro">De la prise d'appel à la clôture, l'interaction est tracée dans Salesforce, jusqu'à l'objet personnalisé Opportunité de Médicis.</p>
+      <div class="suite-grid">
+        <div class="suite-card salesforce">
+          <div class="suite-icon">1</div>
+          <span class="suite-tag">Click-to-call</span>
+          <h3>Appels depuis Salesforce</h3>
+          <p>Déclenchement d'un appel sortant en un clic depuis l'interface Salesforce, via le softphone Ringover intégré.</p>
+          <ul class="suite-features">
+            <li><span class="tick">✓</span>Softphone natif intégré à la barre d'outils Salesforce</li>
+            <li><span class="tick">✓</span>Aucune composition manuelle nécessaire</li>
+          </ul>
+        </div>
+        <div class="suite-card salesforce">
+          <div class="suite-icon">2</div>
+          <span class="suite-tag">Journalisation</span>
+          <h3>Consignation automatique</h3>
+          <p>Les appels sont consignés par défaut sur les objets standards (Pistes, Contacts, Comptes, Opportunités).</p>
+          <ul class="suite-features">
+            <li><span class="tick">✓</span>Horodatage précis (date, heure, durée) de chaque appel</li>
+            <li><span class="tick">✓</span>Suivi de la récurrence des appels pour un même prospect</li>
+          </ul>
+        </div>
+        <div class="suite-card salesforce">
+          <div class="suite-icon">3</div>
+          <span class="suite-tag">Objet personnalisé</span>
+          <h3>Opportunité de Médicis</h3>
+          <p>Pour cibler l'objet personnalisé « Opportunité de Médicis » plutôt que les objets standards, un Flow Salesforce dédié doit être configuré.</p>
+          <ul class="suite-features">
+            <li><span class="tick">✓</span>Rattachement des SMS envoyés depuis le mobile à l'opportunité correspondante</li>
+            <li><span class="tick">✓</span>Configuration d'un Flow pour cibler l'objet Custom Médicis</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="esim">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>La flotte mobile eSIM</h2>
+        <p>Le détail des forfaits disponibles pour la flotte eSIM Médicis, avec ou sans enveloppe data.</p>
+      </div>
+    </div>
+    <div class="esim-panel">
+      <p class="esim-intro">
+        Chaque ligne eSIM peut être déployée avec ou sans forfait data, selon le profil du collaborateur.
+        Les appels et les SMS sont illimités sur l'ensemble des forfaits. Le réseau utilisé est nativement
+        le réseau GSM Orange, et chaque appel comme chaque SMS passé depuis la ligne est automatiquement
+        retranscrit et historisé dans Salesforce, sans action manuelle de l'utilisateur.
+      </p>
+      <p class="esim-label">Forfaits data disponibles</p>
+      <div class="esim-plans">
+        <div class="esim-plan">
+          <span class="vol">Sans data</span>
+          <span class="lbl">Voix &amp; SMS</span>
+          <span class="desc">Appels et SMS illimités, sans enveloppe data</span>
+        </div>
+        <div class="esim-plan">
+          <span class="vol">10 Go</span>
+          <span class="lbl">Forfait data</span>
+          <span class="desc">Appels et SMS illimités inclus</span>
+        </div>
+        <div class="esim-plan featured">
+          <span class="vol">20 Go</span>
+          <span class="lbl">Forfait data</span>
+          <span class="desc">Appels et SMS illimités inclus</span>
+        </div>
+        <div class="esim-plan">
+          <span class="vol">50 Go</span>
+          <span class="lbl">Forfait data</span>
+          <span class="desc">Appels et SMS illimités inclus</span>
+        </div>
+        <div class="esim-plan">
+          <span class="vol">Sur mesure</span>
+          <span class="lbl">Volume ajusté</span>
+          <span class="desc">Enveloppe data adaptée au besoin (ex. 30 Go)</span>
+        </div>
+      </div>
+
+      <p class="esim-label">Ce qu'il faut retenir</p>
+      <div class="esim-features">
+        <div class="esim-feature">
+          <div class="esim-feature-icon">✓</div>
+          <div>
+            <h4>SMS illimités</h4>
+            <p>Tous les forfaits, avec ou sans data, incluent des SMS illimités en France métropolitaine.</p>
+          </div>
+        </div>
+        <div class="esim-feature">
+          <div class="esim-feature-icon">📶</div>
+          <div>
+            <h4>Réseau Orange</h4>
+            <p>Couverture nativement assurée sur le réseau GSM Orange, pour une qualité voix constante sur le territoire.</p>
+          </div>
+        </div>
+        <div class="esim-feature">
+          <div class="esim-feature-icon">⇄</div>
+          <div>
+            <h4>Historisation Salesforce</h4>
+            <p>Chaque appel et SMS est automatiquement retranscrit et historisé dans Salesforce, sans action manuelle.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="legal-empower">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Empower — Conformité juridique &amp; IA</h2>
+        <p>Une réponse directe au point de vigilance juridique soulevé sur l'analyse conversationnelle par IA.</p>
+      </div>
+    </div>
+    <div class="legal-panel">
+      <span class="legal-badge">Garanties contractuelles</span>
+      <p style="margin:0 0 20px; font-size:13.6px; color:var(--ink-soft); max-width:70ch; line-height:1.6;">
+        Médicis souhaite pouvoir s'appuyer sur les analyses de conversation d'Empower, tout en gardant une maîtrise
+        totale sur les fonctionnalités d'IA et d'écoute. Les deux points ci-dessous, issus de la matrice de conformité,
+        répondent directement à ce besoin.
+      </p>
+      <div class="legal-grid">
+        <div class="legal-card">
+          <div class="legal-num">1</div>
+          <div>
+            <h4>Désactivation complète possible</h4>
+            <p>La transcription par IA, l'enregistrement et l'écoute discrète en direct peuvent être totalement désactivés, tout en restant disponibles techniquement. L'administrateur de la plateforme a la main pour désactiver complètement ces fonctionnalités dans les paramètres.</p>
+          </div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-num">2</div>
+          <div>
+            <h4>Garantie contractuelle</h4>
+            <p>Une garantie contractuelle peut être formalisée pour certifier que l'option d'enregistrement ne figure pas comme disponible ou accessible — avec la certitude qu'aucune fonction n'est provisionnée ou activable par erreur.</p>
+          </div>
+        </div>
+      </div>
+      <p class="count-note" style="margin-top:18px;">Ces deux garanties répondent aux exigences 5.1 et 5.2 de la matrice de conformité — consultables dans la grille détaillée ci-dessus.</p>
+    </div>
+  </div>
+</section>
+
+<section id="deployment-plan">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Plan de déploiement</h2>
+        <p>La feuille de route de déploiement sera détaillée avec l'équipe Ringover une fois le périmètre confirmé.</p>
+      </div>
+    </div>
+    <div class="placeholder-panel">
+      <span class="eyebrow">À définir</span>
+      <p>Cette section accueillera le plan de déploiement (phases, formations, portabilité des lignes eSIM et fixes) une fois les documents de cadrage disponibles — sur le même modèle que le reste du dossier.</p>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Tarification</h2>
+        <p>Récapitulatif des postes de licence à chiffrer pour Médicis. Volumes et tarifs à finaliser avec l'équipe commerciale.</p>
+      </div>
+    </div>
+    <div class="table-panel">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Poste</th><th>Description</th><th>Nombre de licences / lignes</th><th>Prix unitaire</th><th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Licence Ringover — Agent</td>
+              <td class="chapitre">Téléphonie, bandeau agent, intégration Salesforce</td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+            </tr>
+            <tr>
+              <td>Lignes mobiles eSIM</td>
+              <td class="chapitre">180 lignes eSIM + 30 lignes data (Offre Enterprise)</td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+            </tr>
+            <tr>
+              <td>Lignes fixes</td>
+              <td class="chapitre">200 utilisateurs, ligne fixe dédiée par collaborateur</td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+            </tr>
+            <tr>
+              <td>Option Empower (IA)</td>
+              <td class="chapitre">Analyse conversationnelle, AMD, heatmap</td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+              <td><span class="blank-cell">à définir</span></td>
+            </tr>
+            <tr>
+              <td colspan="4" style="text-align:right; font-weight:600; color:var(--ink);">Total mensuel estimé</td>
+              <td><span class="blank-cell">à définir</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="count-note">Nombre de lignes, de licences et tarifs à compléter avec l'équipe commerciale Ringover.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div>
+      <p class="foot-brand"><img class="client-logo" src="medicis_immobilier_neuf_logo.jpeg" alt="Médicis">Ringover × Médicis</p>
+      <p id="footNote">Document vivant — synchronisé avec la grille de suivi.</p>
+    </div>
+    <p id="footDate">—</p>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   CONFIGURATION
+   Tant que le lien Google Sheet est vide ou inaccessible, la page affiche
+   les données intégrées (dernière version connue) en secours.
+========================================================================= */
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxNb-QZ4k2bi3JEjvrTr6r5ZCld9TYGb2oPRRStUAWA2lX-cnPMaRBns4diN_cXyBJdtISyBpFgOk3/pub?output=csv";
+
+const FALLBACK_ROWS = [["1.1", "1.1 FLOTTE MOBILE", "180 lignes eSIM à déployer + portabilité entrante des numéros depuis les opérateurs actuels.", "Oui", "Gestion standard des flottes eSIM et processus de portabilité industrielle chez Ringover."], ["1.2", "1.2 COUVERTURE RÉSEAU", "Réseau Orange obligatoire (natif ou MVNO exclusif) + possibilité de switcher vers un autre opérateur hors agence si couverture idéale.", "Partiel", "L'offre ESIM s'appuie nativement sur Orange. En revanche, le basculement manuel et à la volée vers un opérateur concurrent (SFR/Bouygues) par l'utilisateur n'est pas supporté. Il est toutefois toujours possible de passer par l'application mobile, qui repose sur la connexion Internet et pas GSM, pour effectuer les appels."], ["1.3", "1.3 USAGE", "Appels, SMS/MMS illimités en France métropolitaine.", "Oui", "Inclus de base dans les forfaits de l'offre mobile."], ["1.4", "1.4 DATA", "30 Go de Data par ligne pour 30 lignes actives (150 lignes sous contrat tiers exclues du plan data pour le moment).", "Oui", "Le forfait standard ESIM inclut généralement 20 Go. L'extension à 30 Go nécessite un ajustement commercial (Offre Enterprise). L'exclusion des 150 lignes tierces ne pose aucun problème."], ["1.5", "1.5 ITINÉRANCE", "Accès à une enveloppe de données mobiles sur les réseaux européens.", "Non", "L'itinérance des données est uniquement sur le territoire français"], ["1.6", "1.6 GESTION", "Console d'administration permettant de rééditer les QR codes de manière autonome pour la réaffectation rapide des lignes (entrées/sorties).", "Oui", "L'administrateur de la plateforme a la main pour désactiver complètement ces fonctionnalités dans les paramètres."], ["1.7", "1.7 TECHNIQUE", "Possibilité de passer et recevoir des flux d'appels/messages professionnels via l'application WhatsApp.", "Partiel", "L'intégration native entre Ringover et WhatsApp Business permet effectivement d'effectuer des messages professionnels via WhatsApp, mais depuis même l'application Ringover, qui contient le connecteur WhatsApp. Aujourd'hui, l'intégration avec WhatsApp fonctionne uniquement par message, mais est amenée à se développer dans les prochains mois pour couvrir également la voix."], ["1.8", "1.8 TECHNIQUE", "Option Appels Wi-Fi disponible nativement sur iPhone.", "Oui", "Pris en charge nativement via le profil opérateur réseau (Orange) configuré sur l'eSIM."], ["1.9", "1.9 TECHNIQUE", "Collecte des métriques d'appels (logs, durée) si le collaborateur appelle directement depuis le réseau GSM natif (hors app VoIP).", "Oui", "Point fort de Ringover : Grâce à l'infrastructure Simless, les appels passés via le clavier natif du téléphone sont interceptés et consignés dans les statistiques."], ["2.1", "2.1 SVI - ROUTAGE", "Gestion de 36 numéros fictifs (agences) renvoyant automatiquement vers un numéro principal unique.", "Oui", "Configuration classique et native au sein du studio de création de SVI Ringover."], ["2.2", "2.2 SVI - IDENTIFICATION (DNIS)", "Capacité à identifier précisément quel numéro fictif a été composé à l'origine avant d'arriver sur le numéro principal.", "Oui", "Le DNIS est géré par la plateforme, permettant d'afficher au conseiller l'agence ciblée par l'appelant."], ["2.3", "2.3 SVI - FILES D'ATTENTE", "Priorisation dynamique des appels entrants via un numéro d'ordre de 1 à 4.", "Oui", "Les fonctionnalités de l'ACD (file d'attente) permettent d'ajuster les priorités des flux d'appels entrants."], ["2.4", "2.4 SVI - REDIRECTION", "Configuration de scénarios de renvoi immédiat vers un numéro tiers ou boîte vocale dédiée.", "Oui", "Entièrement configurable via l'arborescence graphique du SVI."], ["2.5", "2.5 SVI - SUPERVISION", "Interface superviseur pour visualiser instantanément le statut des conseillers (en ligne, en communication, disponible).", "Oui", "Le Dashboard Superviseur offre une vue temps réel complète de l'état des équipes."], ["2.6", "2.6 SVI - CTI", "Remontée de fiche contact automatique si le numéro est détecté et présent dans la base de données.", "Oui", "Le bandeau CTI Ringover déclenche automatiquement l'ouverture de la fiche client correspondante."], ["3.1", "3.1 CRM - ATTRIBUTION", "Ligne mobile par utilisateur pour un besoin de 200 utilisateurs.", "Oui", "Déploiement et attribution de licences nominatives standards."], ["3.2", "3.2 CRM - MULTI-LIGNES", "Possibilité de fournir une autre ligne mobile à tout ou partie des collaborateurs.", "Oui", "Un utilisateur peut se voir attribuer plusieurs numéros associés à son profil."], ["3.3", "3.3 CRM - LIGNE FIXE", "Possibilité de fournir une ligne fixe dédiée à chaque collaborateur.", "Oui", "Parfaitement géré (attribution d'un numéro géographique ou non géographique par agent)."], ["3.4", "3.4 CRM - CLICK-TO-CALL", "Déclenchement d'un appel sortant en un clic depuis l'interface Salesforce, sans composition manuelle.", "Oui", "Fonctionnalité native via l'intégration du Softphone Ringover dans la barre d'outils Salesforce."], ["3.5", "3.5 CRM - SYNC REPERTOIRE", "Pas de synchronisation automatique par défaut des contacts CRM dans le répertoire local/privé du téléphone.", "Oui", "L'application Ringover sépare de manière étanche les contacts d'entreprise et le répertoire personnel."], ["3.6", "3.6 CRM - LOGS OPPORTUNITÉ", "Consigner automatiquement le journal des appels (entrants/sortants) directement sur l'objet personnalisé 'Opportunité de Médicis' dans Salesforce.", "Partiel", "Ringover logue par défaut sur les objets standards (Pistes, Contacts, Comptes, Opportunités). Pour cibler un objet Custom spécifique (Médicis), il faudra configurer un Flow dans Salesforce."], ["3.7", "3.7 CRM - SMS OPPORTUNITÉ", "Traçage et rattachement automatique des SMS envoyés depuis le terminal mobile vers l'Opportunité correspondante dans Salesforce.", "Oui", "Les SMS sont bien historisés dans Salesforce. Cependant, pour qu'ils se rattachent à la bonne opportunité, le numéro doit être relié à un contact lui-même associé à cette opportunité."], ["4.1", "4.1 ANALYTICS - HORODATAGE", "Date, heure précise et durée de chaque appel consigné sur l'objet personnalisé de chaque opportunité.", "Oui", "Les données sont extraites nativement par Ringover, mais leur intégration sur l'objet Custom dépend de la configuration Salesforce mentionnée au point 3.6."], ["4.2", "4.2 ANALYTICS - SUIVI LEADS", "Mesure de la récurrence des appels pour un même prospect consigné sur l'objet personnalisé de chaque opportunité.", "Oui", "Chaque appel effectué vers un prospect sera historisé sur la fiche Salesforce, ce qui permet d'avoir une vue complète de l'entièreté des échanges envers chaque prospect."], ["4.3", "4.3 ANALYTICS - AMD", "Mécanisme de détection de répondeur (AMD) capable de différencier un humain d'une boîte vocale.", "Oui", "Option disponible, notamment pour optimiser les campagnes d'appels sortants."], ["4.4", "4.4 ANALYTICS - HEATMAP", "Restitution visuelle des pics d'appels entrants/sortants par tranches horaires et par jour.", "Oui", "Graphiques d'analyse de charge disponibles nativement dans l'onglet Statistiques du Dashboard Ringover."], ["5.1", "5.1 IA & ECOUTE - DÉSACTIVATION", "Non-activation des options de transcription par IA, d'enregistrement, et d'écoute discrète en direct (tout en restant disponibles techniquement).", "Oui", "L'administrateur de la plateforme a la main pour désactiver complètement ces fonctionnalités dans les paramètres."], ["5.2", "5.2 IA & ECOUTE - CONTRAT", "Garantie contractuelle que l'option d'enregistrement ne figure pas comme disponible/accessible. Certitude absolue qu'aucune fonction n'est provisionnée ou activable par erreur.", "Oui", "Garantie formalisable dans le cadre contractuel du déploiement."]];
+/* Chaque ligne : [n°, chapitre, exigence, couverture, commentaire] */
+
+function parseCSV(text){
+  const rows = [];
+  let row = [], field = "", inQuotes = false;
+  for(let i=0; i<text.length; i++){
+    const c = text[i], next = text[i+1];
+    if(inQuotes){
+      if(c === '"' && next === '"'){ field += '"'; i++; }
+      else if(c === '"'){ inQuotes = false; }
+      else { field += c; }
+    } else {
+      if(c === '"'){ inQuotes = true; }
+      else if(c === ','){ row.push(field); field = ""; }
+      else if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ""; }
+      else if(c === '\r'){ /* skip */ }
+      else { field += c; }
+    }
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c => c && c.trim() !== ""));
+}
+
+function findCol(header, keywords){
+  const norm = s => s.toLowerCase();
+  for(let i=0;i<header.length;i++){
+    const h = norm(header[i]);
+    if(keywords.some(k => h.includes(k))) return i;
+  }
+  return -1;
+}
+
+const NUM_PATTERN = /^(\d+\.\d+)\s+([^:]+):\s*(.*)$/s;
+
+function rowsFromCSV(text){
+  const table = parseCSV(text);
+  if(table.length < 2) throw new Error("CSV vide");
+  const header = table[0];
+  const idx = {
+    ex: findCol(header, ["exigences client", "exigence"]),
+    co: findCol(header, ["réponse ringover", "couverture"]),
+    cm: findCol(header, ["commentaire"]),
+  };
+  return table.slice(1).map(r => {
+    const rawEx = (idx.ex >= 0 ? r[idx.ex] || "" : "").trim();
+    const co = (idx.co >= 0 ? r[idx.co] || "" : "").trim();
+    const cm = (idx.cm >= 0 ? r[idx.cm] || "" : "").trim();
+    const m = NUM_PATTERN.exec(rawEx);
+    if(m){
+      return [m[1], `${m[1]} ${m[2].trim()}`, m[3].trim(), co, cm];
+    }
+    return ["", "", rawEx, co, cm];
+  }).filter(r => r[2]);
+}
+
+function badgeClass(cov){
+  const c = (cov||"").trim().toLowerCase();
+  if(c === "oui") return "ok";
+  if(c === "partiel") return "warn";
+  if(c === "non") return "bad";
+  return "warn";
+}
+
+function escapeHTML(s){
+  return (s||"").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+const PAGE_SIZE = 8;
+
+function renderCoverageBar(root, stats){
+  if(!root) return;
+  const {total, ok, warn, bad} = stats;
+  const pct = v => total ? (v / total * 100) : 0;
+  const bar = root.querySelector(".coverage-bar");
+  if(bar){
+    const segOk = bar.querySelector(".cov-seg.ok");
+    const segWarn = bar.querySelector(".cov-seg.warn");
+    const segBad = bar.querySelector(".cov-seg.bad");
+    segOk.style.width = pct(ok) + "%";
+    segWarn.style.width = pct(warn) + "%";
+    segBad.style.width = pct(bad) + "%";
+    segOk.title = `Oui — ${ok} (${Math.round(pct(ok))}%)`;
+    segWarn.title = `Partiel — ${warn} (${Math.round(pct(warn))}%)`;
+    segBad.title = `Non — ${bad} (${Math.round(pct(bad))}%)`;
+  }
+  const legend = root.querySelector(".coverage-legend");
+  if(legend){
+    const setItem = (sel, v) => {
+      const b = legend.querySelector(sel + " b");
+      if(b) b.textContent = `${v} (${Math.round(pct(v))}%)`;
+    };
+    setItem(".cov-ok", ok);
+    setItem(".cov-warn", warn);
+    setItem(".cov-bad", bad);
+  }
+}
+
+function initRequirementBoard(cfg){
+  let ALL_ROWS = [];
+  let currentFilter = "Tous";
+  let visibleCount = PAGE_SIZE;
+
+  const searchInput = cfg.gridRoot.querySelector(".search");
+  const tableBody = cfg.gridRoot.querySelector("tbody");
+  const countNote = cfg.gridRoot.querySelector(".count-note");
+  const showMoreWrap = cfg.gridRoot.querySelector(".show-more-wrap");
+  const showMoreBtn = cfg.gridRoot.querySelector(".show-more-btn");
+  const chips = Array.from(cfg.gridRoot.querySelectorAll(".chip"));
+  const lanes = cfg.roadmapRoot ? Array.from(cfg.roadmapRoot.querySelectorAll(".lane")) : [];
+
+  function setStatNum(selector, value, total){
+    if(!cfg.statsRoot) return;
+    const el = cfg.statsRoot.querySelector(selector);
+    if(!el) return;
+    el.innerHTML = total === null ? `${value}` : `${value} <small>${total ? Math.round(value/total*100) : 0}%</small>`;
+  }
+
+  function render(){
+    const q = (searchInput.value || "").toLowerCase().trim();
+    const rows = ALL_ROWS.filter(r => {
+      const matchesFilter = currentFilter === "Tous" || (r[3]||"").trim().toLowerCase() === currentFilter.toLowerCase();
+      if(!matchesFilter) return false;
+      if(!q) return true;
+      return r.join(" ").toLowerCase().includes(q);
+    });
+    const shown = rows.slice(0, visibleCount);
+
+    if(shown.length === 0){
+      tableBody.innerHTML = '<tr class="empty-row"><td colspan="5">Aucune exigence ne correspond à cette recherche.</td></tr>';
+    } else {
+      tableBody.innerHTML = shown.map(r => `
+        <tr>
+          <td class="n">${escapeHTML(r[0])}</td>
+          <td class="chapitre">${escapeHTML(r[1])}</td>
+          <td>${escapeHTML(r[2])}</td>
+          <td><span class="badge ${badgeClass(r[3])}"><span class="d"></span>${escapeHTML(r[3])}</span></td>
+          <td>${escapeHTML(r[4])}</td>
+        </tr>
+      `).join("");
+    }
+    countNote.textContent =
+      `${shown.length} exigence${shown.length > 1 ? "s" : ""} affichée${shown.length > 1 ? "s" : ""} sur ${rows.length} (${ALL_ROWS.length} au total).`;
+
+    const remaining = rows.length - shown.length;
+    showMoreWrap.hidden = remaining <= 0;
+    showMoreBtn.textContent = `Afficher plus (${Math.min(PAGE_SIZE, remaining)} sur ${remaining} restantes)`;
+  }
+
+  function resetPaging(){
+    visibleCount = PAGE_SIZE;
+  }
+
+  function computeStats(){
+    const total = ALL_ROWS.length;
+    const count = v => ALL_ROWS.filter(r => (r[3]||"").trim().toLowerCase() === v).length;
+    const ok = count("oui"), warn = count("partiel"), bad = count("non");
+    setStatNum(".stat.total .num", total, null);
+    setStatNum("#statTotal", total, null);
+    setStatNum(".stat.ok .num", ok, total);
+    setStatNum(".stat.warn .num", warn, total);
+    setStatNum(".stat.bad .num", bad, total);
+    lanes.forEach(lane => {
+      const f = (lane.dataset.filter || "").trim().toLowerCase();
+      const c = f === "oui" ? ok : f === "partiel" ? warn : f === "non" ? bad : 0;
+      const countEl = lane.querySelector(".count");
+      if(countEl) countEl.textContent = c;
+    });
+    const stats = {total, ok, warn, bad};
+    renderCoverageBar(cfg.covRoot, stats);
+    if(cfg.onStats) cfg.onStats(stats);
+  }
+
+  searchInput.addEventListener("input", () => { resetPaging(); render(); });
+  chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      chips.forEach(c => c.setAttribute("aria-pressed","false"));
+      chip.setAttribute("aria-pressed","true");
+      currentFilter = chip.dataset.chip;
+      resetPaging();
+      render();
+    });
+  });
+  lanes.forEach(lane => {
+    const go = () => {
+      const f = lane.dataset.filter;
+      chips.forEach(c => c.setAttribute("aria-pressed", c.dataset.chip === f ? "true" : "false"));
+      currentFilter = f;
+      resetPaging();
+      render();
+      cfg.gridRoot.scrollIntoView({behavior:"smooth", block:"start"});
+    };
+    lane.addEventListener("click", go);
+    lane.addEventListener("keypress", e => { if(e.key === "Enter") go(); });
+  });
+  showMoreBtn.addEventListener("click", () => {
+    visibleCount += PAGE_SIZE;
+    render();
+  });
+
+  async function loadData(){
+    if(cfg.csvUrl && cfg.csvUrl.trim() !== ""){
+      try{
+        const res = await fetch(cfg.csvUrl, {cache:"no-store"});
+        if(!res.ok) throw new Error("HTTP " + res.status);
+        const text = await res.text();
+        ALL_ROWS = rowsFromCSV(text);
+        if(cfg.onSync) cfg.onSync("live");
+        computeStats(); render();
+        return;
+      }catch(err){
+        console.warn("Impossible de charger la Google Sheet, bascule sur les données intégrées.", err);
+      }
+    }
+    ALL_ROWS = cfg.fallbackRows;
+    if(cfg.onSync) cfg.onSync("offline");
+    computeStats(); render();
+  }
+
+  return { loadData };
+}
+
+function setSyncState(mode){
+  const pill = document.getElementById("syncPill");
+  const text = document.getElementById("syncText");
+  const now = new Date().toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
+  if(mode === "live"){
+    pill.classList.remove("offline");
+    text.textContent = `Synchronisé · ${now}`;
+  } else {
+    pill.classList.add("offline");
+    text.textContent = `Données intégrées (hors ligne) · ${now}`;
+  }
+  document.getElementById("footDate").textContent = `Dernière vérification : ${now}`;
+}
+
+const medicisBoard = initRequirementBoard({
+  csvUrl: SHEET_CSV_URL,
+  fallbackRows: FALLBACK_ROWS,
+  gridRoot: document.getElementById("grille"),
+  roadmapRoot: document.getElementById("roadmap"),
+  statsRoot: document.getElementById("cdcStats"),
+  covRoot: document.getElementById("covMedicis"),
+  onSync: setSyncState,
+});
+
+/* ---------- side nav: smooth scroll + scrollspy ---------- */
+(function initSideNav(){
+  const nav = document.querySelector(".side-nav");
+  const navItems = Array.from(document.querySelectorAll(".side-nav-item"));
+  const subItems = Array.from(document.querySelectorAll(".side-nav-subitem"));
+  if(!navItems.length) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const DARK_SECTIONS = new Set(["equipe", "modules-integration", "suite-products", "suite-salesforce"]);
+
+  function watchedIds(item){
+    return (item.dataset.watch || item.dataset.target || "").split(/\s+/).filter(Boolean);
+  }
+
+  function setActive(id){
+    navItems.forEach(item => item.classList.toggle("active", watchedIds(item).includes(id)));
+    subItems.forEach(sub => sub.classList.toggle("active", sub.dataset.target === id));
+    nav.classList.toggle("on-dark", DARK_SECTIONS.has(id));
+  }
+
+  navItems.concat(subItems).forEach(item => {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+      const target = document.getElementById(item.dataset.target);
+      if(!target) return;
+      const topbar = document.querySelector(".topbar");
+      const offset = (topbar ? topbar.offsetHeight : 0) + 14;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({top: Math.max(y, 0), behavior: reduceMotion ? "auto" : "smooth"});
+      setActive(item.dataset.target);
+    });
+  });
+
+  const sections = navItems
+    .flatMap(item => watchedIds(item))
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  if("IntersectionObserver" in window && sections.length){
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, {rootMargin: "-45% 0px -45% 0px", threshold: 0});
+    sections.forEach(section => spy.observe(section));
+  }
+})();
+
+/* ---------- suite-style bands: scroll reveal + mouse-follow spotlight/tilt ---------- */
+(function initSuiteInteractions(){
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const bands = document.querySelectorAll(".suite-band");
+  const suiteCards = document.querySelectorAll(".suite-band .suite-card");
+
+  if(reduceMotion){
+    suiteCards.forEach(card => card.classList.add("in-view"));
+  } else if("IntersectionObserver" in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.2});
+    bands.forEach(band => {
+      band.querySelectorAll(".suite-card").forEach((card, i) => {
+        card.style.setProperty("--d", (i * 0.12) + "s");
+        io.observe(card);
+      });
+    });
+  } else {
+    suiteCards.forEach(card => card.classList.add("in-view"));
+  }
+
+  if(!reduceMotion){
+    suiteCards.forEach(card => {
+      card.addEventListener("pointermove", e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        card.style.setProperty("--mx", (px * 100) + "%");
+        card.style.setProperty("--my", (py * 100) + "%");
+        card.style.setProperty("--tilt-y", ((px - 0.5) * 6) + "deg");
+        card.style.setProperty("--tilt-x", ((0.5 - py) * 6) + "deg");
+      });
+      card.addEventListener("pointerleave", () => {
+        card.style.setProperty("--tilt-x", "0deg");
+        card.style.setProperty("--tilt-y", "0deg");
+      });
+    });
+
+    bands.forEach(band => {
+      const blobs = band.querySelector(".suite-blobs");
+      if(!blobs) return;
+      band.addEventListener("pointermove", e => {
+        const r = band.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        blobs.style.transform = `translate(${px * 30}px, ${py * 22}px)`;
+      });
+      band.addEventListener("pointerleave", () => {
+        blobs.style.transform = "translate(0,0)";
+      });
+    });
+  }
+})();
+
+/* ---------- coverage bar + stat tiles: cursor-tracked spotlight ---------- */
+(function initCoverageBarFX(){
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduceMotion) return;
+  document.querySelectorAll(".coverage-block .coverage-bar").forEach(bar => {
+    bar.addEventListener("pointermove", e => {
+      const r = bar.getBoundingClientRect();
+      const px = ((e.clientX - r.left) / r.width) * 100;
+      const py = ((e.clientY - r.top) / r.height) * 100;
+      bar.style.setProperty("--cbx", px + "%");
+      bar.style.setProperty("--cby", py + "%");
+    });
+  });
+  document.querySelectorAll("#cdcStats .stat").forEach(tile => {
+    tile.addEventListener("pointermove", e => {
+      const r = tile.getBoundingClientRect();
+      const px = ((e.clientX - r.left) / r.width) * 100;
+      const py = ((e.clientY - r.top) / r.height) * 100;
+      tile.style.setProperty("--sx", px + "%");
+      tile.style.setProperty("--sy", py + "%");
+    });
+  });
+})();
+
+medicisBoard.loadData();
+</script>
+</body>
+</html>
