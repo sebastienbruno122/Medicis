@@ -508,9 +508,8 @@
   .esim-panel{background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius); padding:32px; box-shadow:var(--shadow);}
   .esim-intro{margin:0 0 26px; font-size:13.6px; color:var(--ink-soft); max-width:72ch; line-height:1.6;}
   .esim-label{font-family:var(--font-mono); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin:0 0 12px;}
-  .esim-plans{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:30px;}
-  @media (max-width:900px){ .esim-plans{grid-template-columns:repeat(3,1fr);} }
-  @media (max-width:560px){ .esim-plans{grid-template-columns:repeat(2,1fr);} }
+  .esim-plans{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:30px;}
+  @media (max-width:700px){ .esim-plans{grid-template-columns:1fr;} }
   .esim-plan{
     background:var(--bg); border:1px solid var(--panel-border); border-radius:var(--radius-sm);
     padding:20px 14px; text-align:center; display:flex; flex-direction:column; gap:6px;
@@ -534,6 +533,18 @@
     display:inline-block; min-width:70px; padding-bottom:2px; border-bottom:1px dashed var(--ink-faint);
     color:var(--ink-faint); font-family:var(--font-mono); font-size:12.5px; font-style:italic;
   }
+  .price-strike{color:var(--ink-faint); text-decoration:line-through; font-size:12.8px; margin-right:6px;}
+  .price-dedie{color:var(--ok); font-weight:700;}
+  .price-badge{
+    display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em;
+    background:var(--ok-bg); color:var(--ok); padding:3px 9px; border-radius:99px;
+  }
+  .table-block{margin-top:32px;}
+  .table-block:first-of-type{margin-top:0;}
+  .table-block-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap;}
+  .table-block-head h3{font-family:var(--font-display); font-size:16.5px; margin:0;}
+  .table-block-head .table-note{font-size:12.5px; color:var(--ink-faint);}
+  tr.total-row-line td{background:var(--teal-wash); font-weight:700; color:var(--teal-ink); border-top:2px solid rgba(14,143,135,.25);}
   .placeholder-panel{
     background:var(--panel); border:1px dashed var(--panel-border); border-radius:var(--radius);
     padding:32px; box-shadow:var(--shadow); text-align:center;
@@ -846,29 +857,19 @@
       <p class="esim-label">Forfaits data disponibles</p>
       <div class="esim-plans">
         <div class="esim-plan">
-          <span class="vol">Sans data</span>
-          <span class="lbl">Voix &amp; SMS</span>
-          <span class="desc">Appels et SMS illimités, sans enveloppe data</span>
-        </div>
-        <div class="esim-plan">
-          <span class="vol">10 Go</span>
-          <span class="lbl">Forfait data</span>
-          <span class="desc">Appels et SMS illimités inclus</span>
+          <span class="vol">eSIM Voix / SMS</span>
+          <span class="lbl">0 Go — 10 € HT / mois</span>
+          <span class="desc">Idéal pour les lignes de redirection ou le personnel sédentaire sans besoin d'internet mobile professionnel</span>
         </div>
         <div class="esim-plan featured">
-          <span class="vol">20 Go</span>
-          <span class="lbl">Forfait data</span>
-          <span class="desc">Appels et SMS illimités inclus</span>
+          <span class="vol">eSIM Standard</span>
+          <span class="lbl">20 Go — 20 € HT / mois</span>
+          <span class="desc">Adapté aux négociateurs et conseillers terrain : emails, CRM et messagerie en mobilité</span>
         </div>
         <div class="esim-plan">
-          <span class="vol">50 Go</span>
-          <span class="lbl">Forfait data</span>
-          <span class="desc">Appels et SMS illimités inclus</span>
-        </div>
-        <div class="esim-plan">
-          <span class="vol">Sur mesure</span>
-          <span class="lbl">Volume ajusté</span>
-          <span class="desc">Enveloppe data adaptée au besoin (ex. 30 Go)</span>
+          <span class="vol">eSIM Intensive</span>
+          <span class="lbl">50 Go — 40 € HT / mois</span>
+          <span class="desc">Conçu pour les profils très nomades : partage de connexion, visites virtuelles, usages intensifs</span>
         </div>
       </div>
 
@@ -956,55 +957,204 @@
     <div class="section-head">
       <div>
         <h2>Tarification</h2>
-        <p>Récapitulatif des postes de licence à chiffrer pour Médicis. Volumes et tarifs à finaliser avec l'équipe commerciale.</p>
+        <p>Grille tarifaire négociée pour Médicis : licences, options eSIM, IA Airo et numéros.</p>
       </div>
     </div>
-    <div class="table-panel">
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Poste</th><th>Description</th><th>Nombre de licences / lignes</th><th>Prix unitaire</th><th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Licence Ringover — Agent</td>
-              <td class="chapitre">Téléphonie, bandeau agent, intégration Salesforce</td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-            </tr>
-            <tr>
-              <td>Lignes mobiles eSIM</td>
-              <td class="chapitre">180 lignes eSIM + 30 lignes data (Offre Enterprise)</td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-            </tr>
-            <tr>
-              <td>Lignes fixes</td>
-              <td class="chapitre">200 utilisateurs, ligne fixe dédiée par collaborateur</td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-            </tr>
-            <tr>
-              <td>Option Empower (IA)</td>
-              <td class="chapitre">Analyse conversationnelle, AMD, heatmap</td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-              <td><span class="blank-cell">à définir</span></td>
-            </tr>
-            <tr>
-              <td colspan="4" style="text-align:right; font-weight:600; color:var(--ink);">Total mensuel estimé</td>
-              <td><span class="blank-cell">à définir</span></td>
-            </tr>
-          </tbody>
-        </table>
+
+    <div class="table-block">
+      <div class="table-block-head">
+        <h3>Licences</h3>
+      </div>
+      <div class="table-panel">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Type de licence</th><th>Fonctionnalités clés</th><th>Nombre</th><th>Prix public</th><th>Votre prix Médicis</th><th>Économie</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Licence Smart</td>
+                <td class="chapitre">Téléphonie essentielle (sans intégration CRM, stats de base, sans eSIM)</td>
+                <td><span class="blank-cell">à définir</span></td>
+                <td><span class="price-strike">24,00 €</span> HT/mois</td>
+                <td><span class="price-dedie">18,00 €</span> HT/mois</td>
+                <td>-25 %</td>
+              </tr>
+              <tr>
+                <td>Licence Business</td>
+                <td class="chapitre">Intégration Salesforce, numéro mobile, statistiques détaillées, eSIM</td>
+                <td><span class="blank-cell">à définir</span></td>
+                <td><span class="price-strike">47,00 €</span> HT/mois</td>
+                <td><span class="price-dedie">36,00 €</span> HT/mois</td>
+                <td>-23,4 %</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <p class="count-note">Nombre de lignes, de licences et tarifs à compléter avec l'équipe commerciale Ringover.</p>
+
+    <div class="table-block">
+      <div class="table-block-head">
+        <h3>Options eSIM</h3>
+        <span class="table-note">Voir aussi la section « Flotte mobile eSIM » ci-dessus</span>
+      </div>
+      <div class="table-panel">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Option</th><th>Data incluse</th><th>Tarif mensuel / eSIM</th><th>Profil utilisateur cible</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>eSIM Voix / SMS</td>
+                <td class="chapitre">0 Go — appels &amp; SMS illimités</td>
+                <td>10,00 € HT</td>
+                <td class="chapitre">Idéal pour les lignes fixes/mobiles de redirection ou le personnel sédentaire sans besoin d'internet mobile professionnel.</td>
+              </tr>
+              <tr>
+                <td>eSIM Standard</td>
+                <td class="chapitre">20 Go — internet mobile</td>
+                <td>20,00 € HT</td>
+                <td class="chapitre">Adapté aux négociateurs et conseillers terrain pour la consultation d'emails, CRM et messagerie en mobilité.</td>
+              </tr>
+              <tr>
+                <td>eSIM Intensive</td>
+                <td class="chapitre">50 Go — internet mobile haut débit</td>
+                <td>40,00 € HT</td>
+                <td class="chapitre">Conçu pour les profils très nomades (partage de connexion, visites virtuelles, usages intensifs).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-block">
+      <div class="table-block-head">
+        <h3>Airo — IA conversationnelle</h3>
+      </div>
+      <div class="table-panel">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Module / solution IA</th><th>Description</th><th>Modèle / forfait</th><th>Tarif négocié</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Airo Voice Bot</td>
+                <td class="chapitre">Agent vocal IA pour accueil 24/7, qualification et débordement d'appels</td>
+                <td class="chapitre">À la consommation (sans engagement)</td>
+                <td>0,39 € HT / min</td>
+              </tr>
+              <tr>
+                <td>Airo Voice Starter Pack</td>
+                <td class="chapitre">300 minutes d'appel IA incluses / mois</td>
+                <td class="chapitre">Forfait mensuel</td>
+                <td>99,00 € HT / mois</td>
+              </tr>
+              <tr>
+                <td>Airo Voice Growth Pack</td>
+                <td class="chapitre">1 000 minutes d'appel IA incluses / mois</td>
+                <td class="chapitre">Forfait mensuel</td>
+                <td>290,00 € HT / mois</td>
+              </tr>
+              <tr>
+                <td>Airo Voice Scale Pack</td>
+                <td class="chapitre">2 000 minutes d'appel IA incluses / mois</td>
+                <td class="chapitre">Forfait mensuel</td>
+                <td>500,00 € HT / mois</td>
+              </tr>
+              <tr>
+                <td>Airo Voice Business Pack</td>
+                <td class="chapitre">5 000 minutes d'appel IA incluses / mois</td>
+                <td class="chapitre">Forfait mensuel</td>
+                <td>1 100,00 € HT / mois</td>
+              </tr>
+              <tr>
+                <td>Airo Voice Enterprise Pack</td>
+                <td class="chapitre">10 000 minutes d'appel IA incluses / mois (paliers sup. à 0,19 €/min)</td>
+                <td class="chapitre">Forfait mensuel</td>
+                <td>1 900,00 € HT / mois</td>
+              </tr>
+              <tr>
+                <td>Airo Chat / Target First</td>
+                <td class="chapitre">Assistant IA web / chatbot conversationnel sur le site web</td>
+                <td class="chapitre">Par site / mois</td>
+                <td>99,00 € HT / site / mois</td>
+              </tr>
+              <tr>
+                <td>CRM Autofill (Airo)</td>
+                <td class="chapitre">Saisie &amp; résumé automatique d'appels pilotés par l'IA dans le CRM</td>
+                <td class="chapitre">Par licence / mois</td>
+                <td><span class="price-strike">5,00 €</span> HT/mois <span class="price-badge">Offert</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-block">
+      <div class="table-block-head">
+        <h3>Numéros &amp; SMS</h3>
+      </div>
+      <div class="table-panel">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Service / option</th><th>Description</th><th>Prix public</th><th>Votre prix Médicis</th><th>Économie / avantage</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Numéro fixe supplémentaire (01-05, 09)</td>
+                <td class="chapitre">Numéro additionnel pour SVI, lignes directes, groupements d'appels</td>
+                <td>5,00 € HT/mois</td>
+                <td><span class="price-dedie">5,00 €</span> HT/mois</td>
+                <td class="chapitre">Inclut la configuration des SVI &amp; scénarios d'accueil</td>
+              </tr>
+              <tr>
+                <td>Numéro mobile supplémentaire (06-07)</td>
+                <td class="chapitre">Numéro mobile additionnel pour ligne directe ou usage commercial</td>
+                <td>10,00 € HT/mois</td>
+                <td><span class="price-dedie">10,00 €</span> HT/mois</td>
+                <td class="chapitre">Utilisable directement sur l'application Ringover</td>
+              </tr>
+              <tr>
+                <td>Frais de portabilité</td>
+                <td class="chapitre">Conservation de l'ensemble des numéros existants (fixes et mobiles)</td>
+                <td><span class="price-strike">20,00 €</span> HT/numéro</td>
+                <td><span class="price-badge">Offert</span></td>
+                <td class="chapitre">-100 % — prise en charge intégrale des démarches</td>
+              </tr>
+              <tr>
+                <td>SMS individuels (app Ringover)</td>
+                <td class="chapitre">SMS envoyés depuis l'application web/mobile Ringover</td>
+                <td>0,05 € HT/SMS</td>
+                <td><span class="price-dedie">0,05 €</span> HT/SMS</td>
+                <td class="chapitre">Envoi et réception intégrés au CRM</td>
+              </tr>
+              <tr>
+                <td>SMS individuels (eSIM)</td>
+                <td class="chapitre">SMS envoyés depuis les téléphones équipés d'une eSIM Ringover</td>
+                <td class="chapitre">Selon forfait</td>
+                <td><span class="price-badge">Gratuit &amp; illimité</span></td>
+                <td class="chapitre">Inclus d'office dans l'option eSIM</td>
+              </tr>
+              <tr>
+                <td>Campagnes SMS (masse)</td>
+                <td class="chapitre">Envoi de SMS groupés / marketing (relances, promotions, alertes clients)</td>
+                <td class="chapitre">—</td>
+                <td>0,04 € HT/SMS</td>
+                <td class="chapitre">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <p class="count-note">Nombre de licences et de lignes à compléter avec l'équipe commerciale Ringover ; les tarifs unitaires ci-dessus sont ceux négociés pour Médicis.</p>
   </div>
 </section>
 
