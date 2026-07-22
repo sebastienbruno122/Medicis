@@ -502,7 +502,16 @@
     font-family:var(--font-display); font-weight:700; font-size:15px; display:flex; align-items:center; justify-content:center;
   }
   .legal-card h4{margin:0 0 6px; font-size:15px; font-family:var(--font-display);}
-  .legal-card p{margin:0; font-size:13.2px; color:var(--ink-soft); line-height:1.55;}
+  .legal-card p{margin:0 0 8px; font-size:13.2px; color:var(--ink-soft); line-height:1.55;}
+  .legal-card p:last-child{margin-bottom:0;}
+  .legal-card ul{margin:0 0 8px; padding-left:18px; font-size:13.2px; color:var(--ink-soft); line-height:1.55;}
+  .legal-card ul:last-child{margin-bottom:0;}
+  .legal-card li{margin-bottom:4px;}
+  .legal-card li:last-child{margin-bottom:0;}
+  .legal-disclaimer{
+    font-size:12.6px; color:var(--ink-faint); font-style:italic; line-height:1.6;
+    margin:0 0 22px; max-width:74ch; padding-bottom:18px; border-bottom:1px solid var(--panel-border);
+  }
 
   /* ---------- plan de déploiement ---------- */
   .stat-strip.pricing-summary{grid-template-columns:repeat(4,1fr);}
@@ -975,6 +984,41 @@
         </div>
       </div>
       <p class="count-note" style="margin-top:18px;">Ces deux garanties répondent aux exigences 5.1 et 5.2 de la matrice de conformité — consultables dans la grille détaillée ci-dessus.</p>
+    </div>
+
+    <div class="legal-panel" style="margin-top:24px;">
+      <span class="legal-badge">Bonnes pratiques RGPD</span>
+      <p class="legal-disclaimer">
+        À titre liminaire, nous précisons que Ringover ne peut pas fournir de conseil juridique. Les éléments ci-dessous constituent donc des recommandations générales et des bonnes pratiques d'utilisation de nos fonctionnalités. Nous vous invitons à les compléter, le cas échéant, avec votre propre analyse juridique afin de tenir compte de vos processus internes et de vos obligations réglementaires.
+      </p>
+      <div class="legal-grid">
+        <div class="legal-card">
+          <div class="legal-num">1</div>
+          <div>
+            <h4>Écoutes passives</h4>
+            <p>En France, les fonctionnalités d'écoute passive ne sont pas interdites en tant que telles. Leur utilisation doit toutefois s'inscrire dans un cadre conforme, notamment au regard du RGPD et du droit du travail. À ce titre, nous recommandons notamment de :</p>
+            <ul>
+              <li>informer de manière claire les collaborateurs concernés de l'existence de cette fonctionnalité, de ses finalités définies par le client et des modalités de son utilisation ;</li>
+              <li>veiller à ce que les informations requises au titre de la réglementation applicable figurent dans votre documentation interne (politique d'information, registre des traitements, etc.) ;</li>
+              <li>informer également les interlocuteurs externes lorsque cela est requis par votre analyse juridique ou votre politique interne.</li>
+            </ul>
+            <p>À cette fin, Ringover met à disposition de ses clients des fonctionnalités de SVI permettant de diffuser un message d'information en début d'appel à destination de leurs interlocuteurs. La définition du contenu de ce message et de ses modalités d'utilisation relève toutefois de la responsabilité du client.</p>
+          </div>
+        </div>
+        <div class="legal-card">
+          <div class="legal-num">2</div>
+          <div>
+            <h4>Retranscription et résumé automatique des appels</h4>
+            <p>D'un point de vue technique, il n'est pas nécessaire de conserver un enregistrement audio pour générer un résumé automatique. En matière de conformité, nous recommandons notamment de :</p>
+            <ul>
+              <li>informer les collaborateurs ainsi que les interlocuteurs concernés que la conversation fait l'objet d'une retranscription et d'un traitement automatisé destiné à générer un résumé ;</li>
+              <li>intégrer ce traitement dans votre documentation de conformité (information des personnes concernées, registre des traitements, etc.), selon votre propre analyse juridique.</li>
+            </ul>
+            <p>Cette approche permet de conserver une validation humaine du contenu généré avant toute exploitation opérationnelle.</p>
+          </div>
+        </div>
+      </div>
+      <p class="count-note" style="margin-top:18px;">Ces recommandations portent sur l'usage des fonctionnalités d'écoute et de transcription ; elles ne remplacent pas votre propre analyse juridique.</p>
     </div>
   </div>
 </section>
