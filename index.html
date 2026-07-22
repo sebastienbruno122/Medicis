@@ -520,6 +520,9 @@
   }
   .workshop-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
   .workshop-grid.cols-4{grid-template-columns:repeat(4,1fr);}
+  .phase-notes{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px;}
+  @media (max-width:700px){ .phase-notes{grid-template-columns:1fr;} }
+  .phase-panel > p{margin:0; font-size:13.4px; color:var(--ink-soft); line-height:1.6;}
   @media (max-width:900px){ .workshop-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:640px){ .workshop-grid{grid-template-columns:1fr;} }
   .workshop-card{background:var(--bg); border:1px solid var(--panel-border); border-radius:var(--radius); padding:18px; display:flex; flex-direction:column; gap:10px;}
@@ -991,6 +994,142 @@
       <div class="stat ok"><div class="num">~6h</div><div class="label">De formation au total</div></div>
       <div class="stat"><div class="num">3</div><div class="label">Formations optionnelles disponibles</div></div>
     </div>
+
+    <p class="plan-subhead" style="margin-top:28px;">Calendrier de déploiement — trame en 7 phases</p>
+    <p style="max-width:74ch; color:var(--ink-soft); font-size:13.8px; margin:0 0 14px;">
+      Voici la trame de déploiement structurée pour Médicis Immobilier : le cadre de travail que nous allons appliquer ensemble, étape par étape, avec de la visibilité sur ce qui va se passer, les points clés et l'objectif de chaque phase.
+    </p>
+    <div class="prep-block" style="margin-bottom:24px;">
+      <span class="prep-label">Top départ</span>
+      <p>La signature du bon de commande, prévue entre fin août et début septembre, déclenche immédiatement les démarches de portabilité des 180 numéros et l'attribution de votre Customer Success Manager (CSM) dédié chez Ringover.</p>
+    </div>
+
+    <div class="phase-panel">
+      <div class="phase-header">
+        <h3>Phase 1 — Le Kick-Off (Atelier de lancement)</h3>
+        <span class="phase-tag">Début septembre</span>
+      </div>
+      <p>Un premier atelier de cadrage où l'on pose les règles du jeu, les rôles de chacun et le rétro-planning global.</p>
+      <div class="phase-notes">
+        <div class="prep-block">
+          <span class="prep-label">Points clés</span>
+          <p>Validation des cas d'usage métiers dans l'immobilier, cadrage du SVI (standard vocal) et sécurisation du cadre RGPD pour vos enregistrements et transcriptions d'appels.</p>
+        </div>
+        <div class="prep-block">
+          <span class="prep-label">Pourquoi on fait ça</span>
+          <p>Pour aligner nos visions dès le premier jour. Un déploiement réussi repose sur des objectifs clairs et une anticipation parfaite des contraintes de vos agences.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-panel">
+      <div class="phase-header">
+        <h3>Phase 2 — Formation Administrateur &amp; Configuration</h3>
+        <span class="phase-tag">Septembre</span>
+      </div>
+      <p>Un transfert de compétences pour former vos équipes référentes/IT à la prise en main complète de la console maître Ringover.</p>
+      <div class="phase-notes">
+        <div class="prep-block">
+          <span class="prep-label">Points clés</span>
+          <p>Création des 180 accès utilisateurs, paramétrage de vos messages d'accueil SVI, et intégration CTI avec Salesforce.</p>
+        </div>
+        <div class="prep-block">
+          <span class="prep-label">Pourquoi on fait ça</span>
+          <p>Pour vous donner une totale autonomie. Vous devez être capables d'ajuster vos groupes d'appels ou de gérer vos utilisateurs au quotidien sans dépendre d'un support externe.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-panel">
+      <div class="phase-header">
+        <h3>Phase 3 — Optimisation &amp; Validation</h3>
+        <span class="phase-tag">Fin septembre</span>
+      </div>
+      <p>Une séance de recette technique et de contrôle « à blanc » menée par votre CSM avant l'arrivée des équipes.</p>
+      <div class="phase-notes">
+        <div class="prep-block">
+          <span class="prep-label">Points clés</span>
+          <p>Vérification du routage des appels, test de la remontée de fiches dans Salesforce et validation de la flotte des 180 eSIM (20 Go de data).</p>
+        </div>
+        <div class="prep-block">
+          <span class="prep-label">Pourquoi on fait ça</span>
+          <p>Pour garantir le zéro défaut. On ne livre pas un outil à 180 commerciaux sans s'être assurés au préalable que la qualité réseau, la data et le CRM fonctionnent au millimètre.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-panel">
+      <div class="phase-header">
+        <h3>Phase 4 — Formations Utilisateurs &amp; Prise en main</h3>
+        <span class="phase-tag">Octobre</span>
+      </div>
+      <p>Des sessions de formation courtes et interactives organisées par petits groupes pour l'ensemble de vos collaborateurs.</p>
+      <div class="phase-notes">
+        <div class="prep-block">
+          <span class="prep-label">Points clés</span>
+          <p>Prise en main du clavier Ringover, gestion des appels entrants/sortants depuis Salesforce, réglages eSIM et temps de tests internes.</p>
+        </div>
+        <div class="prep-block">
+          <span class="prep-label">Pourquoi on fait ça</span>
+          <p>Parce que la clé du succès, c'est l'adoption terrain. Vos commerciaux doivent voir cet outil comme un gain de temps immédiat, pas comme une contrainte.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-panel">
+      <div class="phase-header">
+        <h3>Phase 5 — Portabilité &amp; Bascule</h3>
+        <span class="phase-tag">Fin octobre / Début novembre</span>
+      </div>
+      <p>La migration effective et définitive de vos numéros réels (fixes et mobiles) vers la plateforme Ringover.</p>
+      <div class="phase-notes">
+        <div class="prep-block">
+          <span class="prep-label">Points clés</span>
+          <p>Bascule orchestrée en heures creuses et passage en production de l'ensemble des 180 collaborateurs.</p>
+        </div>
+        <div class="prep-block">
+          <span class="prep-label">Pourquoi on fait ça</span>
+          <p>Grâce au travail préparatoire des phases précédentes, cette bascule se fait de manière totalement transparente, garantissant une continuité d'activité absolue pour vos clients et prospects.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-panel">
+      <div class="phase-header">
+        <h3>Phase 6 — Formation Superviseurs &amp; Managers</h3>
+        <span class="phase-tag">Novembre</span>
+      </div>
+      <p>Une session dédiée aux managers et responsables d'agences, planifiée environ deux semaines après le lancement.</p>
+      <div class="phase-notes">
+        <div class="prep-block">
+          <span class="prep-label">Points clés</span>
+          <p>Prise en main des tableaux de bord, écoute / double-écoute, analyse des KPI d'appels et accompagnement au quotidien.</p>
+        </div>
+        <div class="prep-block">
+          <span class="prep-label">Pourquoi on fait ça</span>
+          <p>Former les managers une fois que l'outil est apprivoisé leur permet de se concentrer sur l'essentiel : le pilotage de la performance, la qualité de décroché et le coaching de leurs équipes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-panel">
+      <div class="phase-header">
+        <h3>Phase 7 — Bilan d'Onboarding &amp; Clôture</h3>
+        <span class="phase-tag">Fin novembre / Début décembre</span>
+      </div>
+      <p>Une réunion de clôture pour analyser les premiers résultats et formaliser la fin de la phase projet.</p>
+      <div class="phase-notes">
+        <div class="prep-block">
+          <span class="prep-label">Points clés</span>
+          <p>Revue des KPI d'utilisation, niveau d'adoption Salesforce et retour d'expérience global.</p>
+        </div>
+        <div class="prep-block">
+          <span class="prep-label">Pourquoi on fait ça</span>
+          <p>Pour valider ensemble que toutes les promesses initiales sont tenues et ancrer votre téléphonie dans une dynamique d'amélioration continue.</p>
+        </div>
+      </div>
+    </div>
+    <p class="count-note">Un processus fluide, hyper encadré et surtout très rassurant pour vos équipes, qui permet de travailler main dans la main de septembre à décembre.</p>
 
     <p class="plan-subhead" style="margin-top:28px;">Vue d'ensemble</p>
     <div class="workshop-grid cols-4">
